@@ -6,8 +6,27 @@ import  logger  from 'morgan';
 import {fileURLToPath} from 'url';
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
+import 'dotenv/config';
+import mongoose from 'mongoose';
+import cors from "cors"
+
+
+
+
 
 var app = express();
+//Mongoose connection//
+const connectionString = process.env.MONGO_URI
+mongoose.connect( connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("connected to db")
+});
+/////////////////////
+//console.log(process.env.MONGO_URI)
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // view engine setup
@@ -23,6 +42,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+
+app.use(cors({
+  origin: "*",
+}))
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
