@@ -9,9 +9,9 @@ router.get('/', function(req, res, next) {
   res.send(new Date());
 });
 
+router.use(cors())
 
-
-router.post('/',cors(), function(req, res, next) {
+router.post('/', function(req, res, next) {
 const NewItem =mongoose.model("Item", newItemSchema) 
 const itemToPost = new NewItem(req.body)
 
