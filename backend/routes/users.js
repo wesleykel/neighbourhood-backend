@@ -6,7 +6,13 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send(new Date());
+  const NewItem =mongoose.model("Item", newItemSchema) 
+NewItem.find({}, function(err, allItems){
+  if (err) { return next(err) }
+res.send(allItems)
+
+})
+
 });
 
 router.use(cors())
